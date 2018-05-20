@@ -26,7 +26,7 @@ const STONE int = 1
 const GRASS int = 2
 const DIRT int = 3
 const COBBLESTONE int = 4
-const WOOD int = 5
+const PLANKS int = 5
 const BEDROCK int = 7
 const FLOWWATER int = 8
 const STILLWATER int = 9
@@ -34,10 +34,11 @@ const FLOWLAVA int = 10
 const STILLLAVA int = 11
 const SAND int = 12
 const GRAVEL int = 13
-const TREE int = 17
+const WOOD int = 17
 const LEAVES int = 18
 const PLANT int = 31
 const SNOW int = 78
+const PORTAL int = 119
 
 type ChunkModel struct {
 	node *core.Node // holder for chunk meshes
@@ -57,11 +58,15 @@ func (m *ChunkMaterials) Initialize() {
 	m.mats[STONE] = material.NewPhong(math32.NewColor("lightslategray"))
 	m.mats[GRASS] = material.NewPhong(math32.NewColor("lawngreen"))
 	m.mats[DIRT] = material.NewPhong(math32.NewColor("chocolate"))
-	m.mats[SNOW] = material.NewPhong(math32.NewColor("white"))
+	m.mats[PLANKS] = material.NewPhong(math32.NewColor("tan"))
 	m.mats[STILLWATER] = material.NewPhong(math32.NewColor("blue"))
 	m.mats[SAND] = material.NewPhong(math32.NewColor("beige"))
 	m.mats[STILLLAVA] = material.NewPhong(math32.NewColor("orangered"))
 	m.mats[STILLLAVA].SetEmissiveColor(math32.NewColor("orangered"))
+	m.mats[WOOD] = material.NewPhong(math32.NewColor("peru"))
+	m.mats[LEAVES] = material.NewPhong(math32.NewColor("green"))
+	m.mats[SNOW] = material.NewPhong(math32.NewColor("white"))
+	m.mats[PORTAL] = material.NewPhong(math32.NewColor("purple"))
 }
 
 func (m *ChunkMaterials) Get(n int) *material.Phong {
@@ -156,6 +161,10 @@ func main() {
 					mesh := graphic.NewMesh(geom, mats.Get(DIRT))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
 					model.Add(mesh)
+				case PLANKS:
+					mesh := graphic.NewMesh(geom, mats.Get(PLANKS))
+					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
+					model.Add(mesh)
 				case BEDROCK:
 					mesh := graphic.NewMesh(geom, mats.Get(BEDROCK))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
@@ -172,8 +181,20 @@ func main() {
 					mesh := graphic.NewMesh(geom, mats.Get(STILLLAVA))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
 					model.Add(mesh)
+				case WOOD:
+					mesh := graphic.NewMesh(geom, mats.Get(WOOD))
+					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
+					model.Add(mesh)
+				case LEAVES:
+					mesh := graphic.NewMesh(geom, mats.Get(LEAVES))
+					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
+					model.Add(mesh)
 				case SNOW:
 					mesh := graphic.NewMesh(geom, mats.Get(SNOW))
+					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
+					model.Add(mesh)
+				case PORTAL:
+					mesh := graphic.NewMesh(geom, mats.Get(PORTAL))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
 					model.Add(mesh)
 				default:
