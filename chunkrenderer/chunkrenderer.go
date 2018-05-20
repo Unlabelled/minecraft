@@ -60,6 +60,8 @@ func (m *ChunkMaterials) Initialize() {
 	m.mats[SNOW] = material.NewPhong(math32.NewColor("white"))
 	m.mats[STILLWATER] = material.NewPhong(math32.NewColor("blue"))
 	m.mats[SAND] = material.NewPhong(math32.NewColor("beige"))
+	m.mats[STILLLAVA] = material.NewPhong(math32.NewColor("orangered"))
+	m.mats[STILLLAVA].SetEmissiveColor(math32.NewColor("orangered"))
 }
 
 func (m *ChunkMaterials) Get(n int) *material.Phong {
@@ -164,6 +166,10 @@ func main() {
 					model.Add(mesh)
 				case SAND:
 					mesh := graphic.NewMesh(geom, mats.Get(SAND))
+					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
+					model.Add(mesh)
+				case STILLLAVA, FLOWLAVA:
+					mesh := graphic.NewMesh(geom, mats.Get(STILLLAVA))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
 					model.Add(mesh)
 				case SNOW:
