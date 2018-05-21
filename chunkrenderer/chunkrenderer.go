@@ -13,7 +13,6 @@ import (
 	"github.com/g3n/engine/gls"
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/light"
-	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/renderer"
 	"github.com/g3n/engine/window"
@@ -37,45 +36,9 @@ const GRAVEL int = 13
 const WOOD int = 17
 const LEAVES int = 18
 const PLANT int = 31
+const WOOL int = 35
 const SNOW int = 78
 const PORTAL int = 119
-
-type ChunkModel struct {
-	node *core.Node // holder for chunk meshes
-}
-
-func (m *ChunkModel) Add(mesh *graphic.Mesh) {
-	m.node.Add(mesh)
-}
-
-type ChunkMaterials struct {
-	mats map[int]*material.Phong
-}
-
-func (m *ChunkMaterials) Initialize() {
-	m.mats = make(map[int]*material.Phong)
-	m.mats[BEDROCK] = material.NewPhong(math32.NewColor("darkslategray"))
-	m.mats[STONE] = material.NewPhong(math32.NewColor("lightslategray"))
-	m.mats[GRASS] = material.NewPhong(math32.NewColor("lawngreen"))
-	m.mats[DIRT] = material.NewPhong(math32.NewColor("chocolate"))
-	m.mats[PLANKS] = material.NewPhong(math32.NewColor("tan"))
-	m.mats[STILLWATER] = material.NewPhong(math32.NewColor("blue"))
-	m.mats[SAND] = material.NewPhong(math32.NewColor("beige"))
-	m.mats[STILLLAVA] = material.NewPhong(math32.NewColor("orangered"))
-	m.mats[STILLLAVA].SetEmissiveColor(math32.NewColor("orangered"))
-	m.mats[WOOD] = material.NewPhong(math32.NewColor("peru"))
-	m.mats[LEAVES] = material.NewPhong(math32.NewColor("green"))
-	m.mats[SNOW] = material.NewPhong(math32.NewColor("white"))
-	m.mats[PORTAL] = material.NewPhong(math32.NewColor("purple"))
-}
-
-func (m *ChunkMaterials) Get(n int) *material.Phong {
-	mat, ok := m.mats[n]
-	if ok {
-		return mat
-	}
-	return nil
-}
 
 func main() {
 
@@ -145,6 +108,9 @@ func main() {
 	mats := new(ChunkMaterials)
 	mats.Initialize()
 
+	woolmats := new(WoolTypes)
+	woolmats.Initialize()
+
 	for i, _ := range chunk.grid {
 		for j, _ := range chunk.grid[i] {
 			for k, _ := range chunk.grid[i][j] {
@@ -187,6 +153,10 @@ func main() {
 					model.Add(mesh)
 				case LEAVES:
 					mesh := graphic.NewMesh(geom, mats.Get(LEAVES))
+					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
+					model.Add(mesh)
+				case WOOL:
+					mesh := graphic.NewMesh(geom, woolmats.Get(chunk.grid[i][j][k].f))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
 					model.Add(mesh)
 				case SNOW:

@@ -42,7 +42,7 @@ func check(e error) {
 	}
 }
 
-func ReadSections(filename string, cX, cZ int) [][][]byte {
+func ReadSections(filename string, cX, cZ int) [][][]uint16 {
 	f, err = os.Open(filename)
 	check(err)
 	var locations []byte
@@ -55,22 +55,27 @@ func ReadSections(filename string, cX, cZ int) [][][]byte {
 	chunk := getChunk(cX, cZ, locations)
 	region := mapifyChunk(chunk)
 	sections := region["Sections"].([]Section)
-	chunkSlices := make([][][]byte, 256)
+	chunkSlices := make([][][]uint16, 256)
 
 	for _, section := range sections {
+		data := section.Data
 		blocks := section.Blocks
 		yLevel := section.Y
 		for y := 0; y < 16; y++ {
-			zArray := make([][]byte, 16)
+			zArray := make([][]uint16, 16)
 			yIndex := (yLevel * 16) + y
 			chunkSlices[yIndex] = zArray
 			for z := 0; z < 16; z++ {
-				xArray := make([]byte, 16)
+				xArray := make([]uint16, 16)
 				zArray[z] = xArray
 				for x := 0; x < 16; x++ {
 					blockId := blockId(y, z, x)
-					value := blocks[blockId]
-					chunkSlices[yIndex][z][x] = value
+					dataId := blockId >> 1
+					blockValueByte := blocks[blockId]
+					dataByte := data[dataId]
+					dataNibble := nibbleFromByte(dataByte, blockId)
+					dataValue := shortFromByteAndNibble(blockValueByte, dataNibble)
+					chunkSlices[yIndex][z][x] = dataValue
 				}
 			}
 		}
@@ -316,4 +321,18 @@ func split(aMap map[string]interface{}) (string, interface{}) {
 		//
 	}
 	return k, v
+}
+
+func nibbleFromByte(b byte, id int) byte {
+	if id%2 == 0 {
+		return b & 0x0F
+	} else {
+		return b >> 4
+	}
+}
+
+func shortFromByteAndNibble(b byte, n byte) uint16 {
+	b16 := uint16(b)
+	n16 := uint16(n)
+	return (b16 << 4) + n16
 }
