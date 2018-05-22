@@ -88,9 +88,11 @@ func main() {
 	mats := new(ChunkMaterials)
 	mats.Initialize()
 
+	// Initialize a map of wool colours keyed on secondary block flag
 	woolmats := new(WoolTypes)
 	woolmats.Initialize()
 
+	// Iterate over blocks in chunk and add coloured meshes to the model
 	for i, _ := range chunk.grid {
 		for j, _ := range chunk.grid[i] {
 			for k, _ := range chunk.grid[i][j] {
