@@ -20,26 +20,6 @@ import (
 	"github.com/Unlabelled/minecraft/chunkpeeker"
 )
 
-const EMPTY int = 0
-const STONE int = 1
-const GRASS int = 2
-const DIRT int = 3
-const COBBLESTONE int = 4
-const PLANKS int = 5
-const BEDROCK int = 7
-const FLOWWATER int = 8
-const STILLWATER int = 9
-const FLOWLAVA int = 10
-const STILLLAVA int = 11
-const SAND int = 12
-const GRAVEL int = 13
-const WOOD int = 17
-const LEAVES int = 18
-const PLANT int = 31
-const WOOL int = 35
-const SNOW int = 78
-const PORTAL int = 119
-
 func main() {
 
 	filename, cX, cZ := processCommandLineArgs()
@@ -115,56 +95,14 @@ func main() {
 		for j, _ := range chunk.grid[i] {
 			for k, _ := range chunk.grid[i][j] {
 				switch chunk.grid[i][j][k].id {
-				case STONE:
-					mesh := graphic.NewMesh(geom, mats.Get(STONE))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case GRASS:
-					mesh := graphic.NewMesh(geom, mats.Get(GRASS))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case DIRT:
-					mesh := graphic.NewMesh(geom, mats.Get(DIRT))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case PLANKS:
-					mesh := graphic.NewMesh(geom, mats.Get(PLANKS))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case BEDROCK:
-					mesh := graphic.NewMesh(geom, mats.Get(BEDROCK))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case STILLWATER, FLOWWATER:
-					mesh := graphic.NewMesh(geom, mats.Get(STILLWATER))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case SAND:
-					mesh := graphic.NewMesh(geom, mats.Get(SAND))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case STILLLAVA, FLOWLAVA:
-					mesh := graphic.NewMesh(geom, mats.Get(STILLLAVA))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case WOOD:
-					mesh := graphic.NewMesh(geom, mats.Get(WOOD))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case LEAVES:
-					mesh := graphic.NewMesh(geom, mats.Get(LEAVES))
+				case STONE, GRASS, DIRT, PLANKS, BEDROCK, STILLWATER,
+					FLOWWATER, SAND, STILLLAVA, FLOWLAVA, WOOD, LEAVES,
+					SNOW, PORTAL:
+					mesh := graphic.NewMesh(geom, mats.Get(chunk.grid[i][j][k].id))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
 					model.Add(mesh)
 				case WOOL:
 					mesh := graphic.NewMesh(geom, woolmats.Get(chunk.grid[i][j][k].f))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case SNOW:
-					mesh := graphic.NewMesh(geom, mats.Get(SNOW))
-					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
-					model.Add(mesh)
-				case PORTAL:
-					mesh := graphic.NewMesh(geom, mats.Get(PORTAL))
 					mesh.SetPositionVec(chunk.grid[i][j][k].loc.Vec3())
 					model.Add(mesh)
 				default:

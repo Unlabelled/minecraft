@@ -8,22 +8,41 @@ import (
 )
 
 const (
-	WHITE     = 0
-	ORANGE    = 1
-	MAGENTA   = 2
-	LIGHTBLUE = 3
-	YELLOW    = 4
-	LIME      = 5
-	PINK      = 6
-	GRAY      = 7
-	LIGHTGRAY = 8
-	CYAN      = 9
-	PURPLE    = 10
-	BLUE      = 11
-	BROWN     = 12
-	GREEN     = 13
-	RED       = 14
-	BLACK     = 15
+	EMPTY       = 0
+	STONE       = 1
+	GRASS       = 2
+	DIRT        = 3
+	COBBLESTONE = 4
+	PLANKS      = 5
+	BEDROCK     = 7
+	FLOWWATER   = 8
+	STILLWATER  = 9
+	FLOWLAVA    = 10
+	STILLLAVA   = 11
+	SAND        = 12
+	GRAVEL      = 13
+	WOOD        = 17
+	LEAVES      = 18
+	PLANT       = 31
+	WOOL        = 35
+	SNOW        = 78
+	PORTAL      = 119
+	WHITE       = 0
+	ORANGE      = 1
+	MAGENTA     = 2
+	LIGHTBLUE   = 3
+	YELLOW      = 4
+	LIME        = 5
+	PINK        = 6
+	GRAY        = 7
+	LIGHTGRAY   = 8
+	CYAN        = 9
+	PURPLE      = 10
+	BLUE        = 11
+	BROWN       = 12
+	GREEN       = 13
+	RED         = 14
+	BLACK       = 15
 )
 
 type GridLoc struct {
